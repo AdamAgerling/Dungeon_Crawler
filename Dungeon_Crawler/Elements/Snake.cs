@@ -1,5 +1,9 @@
 ﻿
-internal class Snake
+class Snake : Enemy
     {
+    public override void EnemyMovementPattern()
+        {
+
+        }
     }
 

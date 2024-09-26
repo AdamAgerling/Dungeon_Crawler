@@ -1,4 +1,8 @@
 ﻿
-internal class Rat
+class Rat : Enemy
     {
+    public override void EnemyMovementPattern()
+        {
+
+        }
     }
