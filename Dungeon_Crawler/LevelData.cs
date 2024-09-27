@@ -9,14 +9,17 @@
 
 class LevelData
     {
-    private List<LevelElement> elements = new List<LevelElement>();
+    private List<LevelElement> _elements;
+    public IReadOnlyList<LevelElement> elements => _elements.AsReadOnly();
+    public LevelData()
+        {
+        _elements = new List<LevelElement>();
+        }
 
-    // elements should be readOnly.
-
-
-    public static void Load(string filename)
+    public void Load(string filename)
         {
         // Should keep track of position X,Y. And stuff.
+
         }
     }
 

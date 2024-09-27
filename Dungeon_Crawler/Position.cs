@@ -1,10 +1,8 @@
 ﻿
 public struct Position
     {
-    public int X;
-    public int Y;
-
-    public Position(Position position) : this(position.X, position.Y) { }
+    public int X { get; set; }
+    public int Y { get; set; }
 
     public Position(int x, int y)
         {

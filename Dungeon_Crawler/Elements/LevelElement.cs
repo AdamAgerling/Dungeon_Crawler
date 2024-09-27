@@ -1,13 +1,16 @@
 ﻿
 abstract class LevelElement
     {
-
-    char wall = '#';
-
+    public ConsoleColor ColorPicker { get; set; }
+    public Position Position { get; set; }
+    public char MapElement { get; set; }
 
     public void Draw()
         {
-        // Will be used to draw out the LevelElements, (#, s, r etc)
+        Console.ForegroundColor = ColorPicker;
+        Console.Write(MapElement);
+        Console.SetCursorPosition(Position.X, Position.Y);
+        Console.ResetColor();
         }
     }
 

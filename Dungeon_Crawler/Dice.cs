@@ -12,6 +12,8 @@
 //Gör även en override av Dice.ToString(), så att man när man skriver ut ett Dice-objekt får en sträng som beskriver objektets konfiguration. t.ex: “3d6 + 2”.
 class Dice
     {
-
+    public int Attack { get; set; }
+    public int Defence { get; set; }
+    public int Health { get; set; }
     }
 

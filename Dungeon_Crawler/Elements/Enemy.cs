@@ -1,9 +1,10 @@
 ﻿
 abstract class Enemy : LevelElement
     {
+    public string Name { get; set; }
     public int Health { get; set; }
-    public int Attack { get; set; }
-    public int Defence { get; set; }
+    public Dice Attack { get; set; }
+    public Dice Defence { get; set; }
 
     public abstract void EnemyMovementPattern();
 
