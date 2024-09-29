@@ -11,9 +11,26 @@
 
 //Gör även en override av Dice.ToString(), så att man när man skriver ut ett Dice-objekt får en sträng som beskriver objektets konfiguration. t.ex: “3d6 + 2”.
 class Dice
+{
+    private int _modifier;
+    private int _numberOfDice;
+    private int _sidesPerDice;
+    public Dice(int numberOfDice, int sidesPerDice, int modifier)
     {
-    public int Attack { get; set; }
-    public int Defence { get; set; }
-    public int Health { get; set; }
+        _numberOfDice = numberOfDice;
+        _sidesPerDice = sidesPerDice;
+        _modifier = modifier;
     }
+
+    public int Throw()
+    {
+        var random = new Random();
+        var value = 0;
+        for (int i = 0; i < _numberOfDice; i++)
+        {
+            value += random.Next(0, _sidesPerDice + 1);
+        }
+        return value + _modifier;
+    }
+}
 
