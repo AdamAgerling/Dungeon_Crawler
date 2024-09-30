@@ -18,16 +18,18 @@ class Game
     public void Play()
     {
         var levelData = new LevelData();
-        var playerStartPosition = levelData.Load("Level1.txt");
+        var mapLoadStartPosition = levelData.Load("Level1.txt");
+
+        var player = new Player(mapLoadStartPosition);
+        var rat = new Rat(mapLoadStartPosition);
+        var snake = new Snake(mapLoadStartPosition);
 
         var initialState = levelData.Elements;
 
-        var player = new Player(playerStartPosition);
         var updatedState = GetUpdatedMapState(initialState, player);
 
         while (true)
         {
-
             PrintMap(updatedState);
 
             var keyPress = Console.ReadKey();
@@ -36,29 +38,9 @@ class Game
                 break;
             }
 
-            var playernsPosition = player.Position;
+            var playerCurrentPosition = player.GetNewPlayerPosition(keyPress);
 
-            switch (keyPress.Key)
-            {
-                case ConsoleKey.W:
-                case ConsoleKey.UpArrow:
-                    playernsPosition.Y -= 1;
-                    break;
-                case ConsoleKey.S:
-                case ConsoleKey.DownArrow:
-                    playernsPosition.Y += 1;
-                    break;
-                case ConsoleKey.A:
-                case ConsoleKey.LeftArrow:
-                    playernsPosition.X -= 1;
-                    break;
-                case ConsoleKey.D:
-                case ConsoleKey.RightArrow:
-                    playernsPosition.X += 1;
-                    break;
-            }
-
-            updatedState = TryMoveHere(updatedState, player, playernsPosition, keyPress);
+            updatedState = TryMoveHere(updatedState, player, playerCurrentPosition, keyPress, snake, rat);
 
             ClearMap();
         }
@@ -73,26 +55,65 @@ class Game
         }
         return levelElements.OrderBy(x => x.Position.Y).ThenBy(x => x.Position.X).ToList();
     }
-    private List<LevelElement> TryMoveHere(List<LevelElement> levelElements, Player player, Position playerNewPosition, ConsoleKeyInfo keyPress)
+    private List<LevelElement> TryMoveHere(List<LevelElement> levelElements, Player player, Position playerNewPosition, ConsoleKeyInfo keyPress, Snake snake, Rat rat)
     {
-        var potentialEncounter = levelElements
+        var moveTo = levelElements
             .FirstOrDefault(element => element.Position.X == playerNewPosition.X && element.Position.Y == playerNewPosition.Y);
 
-        if (potentialEncounter != null)
-        {
-            if (potentialEncounter.GetType() == typeof(Wall))
-            {
+        var playerAttack = player.PlayerAttack.Throw();
+        var playerDefence = player.PlayerDefence.Throw();
+        var playerHealth = player.PlayerHealth;
 
-            }
-            else
+        if (moveTo != null)
+        {
+            if (moveTo is Wall)
             {
-                player.GetNewPlayerPosition(keyPress);
-                levelElements.Remove(potentialEncounter);
+                return levelElements;
+            }
+            else if (moveTo is Snake)
+            {
+                var snakeDefence = snake.DefenceDice.Throw();
+                var snakeDamageTaken = Math.Max(0, playerAttack - snakeDefence);
+                var snakeAttack = snake.AttackDice.Throw();
+                var damageTakenFromSnake = Math.Max(0, snakeAttack - playerDefence);
+                snake.Health -= snakeDamageTaken;
+                Console.WriteLine($"{player.Name} rolled a {playerAttack} in attack and {snake.Name} rolled a {snakeDefence} in defence. {snake.Name} takes: {snakeDamageTaken} damage.");
+
+                playerHealth -= damageTakenFromSnake;
+                Console.WriteLine($"{snake.Name} rolled a {snakeAttack} in attack and {player.Name} rolled a {playerDefence} in defence. {player.Name} takes: {damageTakenFromSnake} damage.");
+                if (snake.Health <= 0)
+                {
+                    Console.WriteLine($"{snake.Name} died.");
+                    levelElements.Remove(moveTo);
+                }
+            }
+            else if (moveTo is Rat)
+            {
+                var ratDefence = rat.DefenceDice.Throw();
+                var ratDamageTaken = Math.Max(0, playerAttack - ratDefence);
+                var ratAttack = rat.AttackDice.Throw();
+                var playerDamageTaken = Math.Max(0, ratAttack - playerDefence);
+                rat.Health -= ratDamageTaken;
+                Console.WriteLine($"{player.Name} rolled a {playerAttack} in attack and {rat.Name} rolled a {ratDefence} in defence. {rat.Name} takes: {ratDamageTaken} damage.");
+
+                playerHealth -= playerDamageTaken;
+                Console.WriteLine($"{rat.Name} rolled a {ratAttack} in attack and {player.Name} rolled a {playerDefence} in defence. {player.Name} takes: {playerDamageTaken} damage.");
+                if (rat.Health <= 0)
+                {
+                    Console.WriteLine($"{rat.Name} died.");
+                    levelElements.Remove(moveTo);
+                }
+            }
+
+            if (playerHealth <= 0)
+            {
+                Console.WriteLine($"{player.Name} died. Game over..");
+                Environment.Exit(0);
             }
         }
         else
         {
-            player.GetNewPlayerPosition(keyPress);
+            player.Position = playerNewPosition;
         }
 
         return GetUpdatedMapState(levelElements, player);
@@ -100,27 +121,26 @@ class Game
 
     private void PrintMap(List<LevelElement> levelElements)
     {
-        var x = 0;
-        var y = 0;
-
         foreach (var element in levelElements)
         {
-            if (element.Position.Y > y)
-            {
-                Console.WriteLine();
-                y = element.Position.Y;
-                x = 0;
-            }
-            if (x < element.Position.X)
-            {
-                while (x < element.Position.X)
-                {
-                    Console.Write(" ");
-                    x++;
-                }
-            }
+            Console.SetCursorPosition(element.Position.X, element.Position.Y);
             element.Draw();
-            x++;
+        }
+    }
+
+    private void UpdateEnemies(List<LevelElement> levelElements, Player player)
+    {
+        foreach (var element in levelElements)
+        {
+            if (element is Rat rat)
+            {
+                // NYI.
+            }
+            else if (element is Snake snake)
+            {
+                // NYI.
+            }
+
         }
     }
 
@@ -130,5 +150,3 @@ class Game
         Console.Clear();
     }
 }
-
-

@@ -23,7 +23,7 @@ internal class Player : LevelElement
 
     public Position GetNewPlayerPosition(ConsoleKeyInfo cki)
     {
-        Position newPlayerPosition = Position;
+        Position newPlayerPosition = new Position(Position.X, Position.Y);
 
         switch (cki.Key)
         {
@@ -44,7 +44,7 @@ internal class Player : LevelElement
                 newPlayerPosition.X += 1;
                 break;
         }
-        Position = newPlayerPosition;
+
         return newPlayerPosition;
     }
 
