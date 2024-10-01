@@ -32,5 +32,10 @@ class Dice
         }
         return value + _modifier;
     }
+
+    public override string ToString()
+    {
+        return $"{_numberOfDice}d{_sidesPerDice} + {_modifier}";
+    }
 }
 

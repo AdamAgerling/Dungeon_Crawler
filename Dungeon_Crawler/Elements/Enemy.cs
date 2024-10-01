@@ -6,7 +6,7 @@ abstract class Enemy : LevelElement
     public Dice AttackDice { get; set; }
     public Dice DefenceDice { get; set; }
 
-    public abstract void EnemyMovementPattern();
+    public abstract void UpdateEnemies(List<LevelElement> levelelements, Player player);
 
 }
 

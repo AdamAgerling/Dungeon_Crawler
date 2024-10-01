@@ -44,7 +44,6 @@ internal class Player : LevelElement
                 newPlayerPosition.X += 1;
                 break;
         }
-
         return newPlayerPosition;
     }
 

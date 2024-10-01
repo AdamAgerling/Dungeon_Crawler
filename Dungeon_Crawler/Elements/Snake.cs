@@ -13,9 +13,15 @@ class Snake : Enemy
         DefenceDice = new Dice(1, 8, 5);
     }
 
-    public override void EnemyMovementPattern()
+    public override void UpdateEnemies(List<LevelElement> levelElements, Player player)
     {
-
+        foreach (var element in levelElements)
+        {
+            if (element is Snake snake)
+            {
+                // NYI.
+            }
+        }
     }
 }
 

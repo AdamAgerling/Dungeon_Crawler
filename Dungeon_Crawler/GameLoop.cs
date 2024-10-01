@@ -19,29 +19,28 @@ class Game
     {
         var levelData = new LevelData();
         var mapLoadStartPosition = levelData.Load("Level1.txt");
-
         var player = new Player(mapLoadStartPosition);
+        Position? lastPlayerPosition = null;
         var rat = new Rat(mapLoadStartPosition);
         var snake = new Snake(mapLoadStartPosition);
-
         var initialState = levelData.Elements;
         var updatedState = GetUpdatedMapState(initialState, player);
 
         while (true)
         {
-            PrintMap(updatedState);
             PlayerStats(player);
+            PrintMap(updatedState, player, lastPlayerPosition);
+
 
             var keyPress = Console.ReadKey();
             if (keyPress.Key == ConsoleKey.Escape)
             {
                 break;
             }
-            var playerCurrentPosition = player.GetNewPlayerPosition(keyPress);
-            updatedState = TryMoveHere(updatedState, player, playerCurrentPosition, keyPress);
-
-
-            ClearMap();
+            lastPlayerPosition = player.Position;
+            var playerNewPosition = player.GetNewPlayerPosition(keyPress);
+            updatedState = TryMoveHere(updatedState, player, playerNewPosition, keyPress);
+            rat.UpdateEnemies(updatedState, player);
         }
     }
 
@@ -91,12 +90,18 @@ class Game
         return GetUpdatedMapState(levelElements, player);
     }
 
-    private void PrintMap(List<LevelElement> levelElements)
+    private void PrintMap(List<LevelElement> levelElements, Player player, Position? lastPlayerPosition)
     {
+        int mapOffset = 4;
+        if (lastPlayerPosition != null)
+        {
+            Console.SetCursorPosition(lastPlayerPosition.Value.X, lastPlayerPosition.Value.Y + mapOffset);
+            Console.Write(' ');
+        }
 
         foreach (var element in levelElements)
         {
-            Console.SetCursorPosition(element.Position.X, element.Position.Y);
+            Console.SetCursorPosition(element.Position.X, element.Position.Y + mapOffset);
             element.Draw();
         }
     }
@@ -111,41 +116,31 @@ class Game
         var enemyDamageTaken = Math.Max(0, playerAttack - enemyDefence);
 
         enemy.Health -= enemyDamageTaken;
-        Console.WriteLine($"{player.Name} attacks {enemy.Name} for {enemyDamageTaken} damage!");
+        Console.WriteLine($"\n{player.Name} attacks {enemy.Name} for {enemyDamageTaken} damage!");
 
         player.PlayerHealth -= playerDamageTaken;
         Console.WriteLine($"{enemy.Name} attacks {player.Name} for {playerDamageTaken} damage!");
 
         if (enemy.Health <= 0)
         {
-            Console.WriteLine($"{enemy.Name} died.");
             levelElements.Remove(enemy);
+            Console.WriteLine($"{enemy.Name} died.");
         }
     }
 
-    private void UpdateEnemies(List<LevelElement> levelElements, Player player)
-    {
-        foreach (var element in levelElements)
-        {
-            if (element is Rat rat)
-            {
-                // NYI.
-            }
-            else if (element is Snake snake)
-            {
-                // NYI.
-            }
 
-        }
-    }
 
-    private void PlayerStats(Player player)
+    public void PlayerStats(Player player)
     {
-        Console.WriteLine($"{player.Name}:{player.PlayerHealth}HP");
+        ClearCurrentConsoleLine(0);
+        Console.WriteLine($"{player.Name}:{player.PlayerHealth}health");
 
     }
-    private void ClearMap()
+    public static void ClearCurrentConsoleLine(int row)
     {
-        Console.Clear();
+        Console.SetCursorPosition(row, 0);
+        Console.Write(new string(' ', Console.WindowWidth));
+        Console.SetCursorPosition(row, 0);
     }
+
 }
