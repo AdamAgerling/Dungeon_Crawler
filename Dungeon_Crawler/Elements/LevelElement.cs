@@ -12,4 +12,3 @@ abstract class LevelElement
         Console.ResetColor();
     }
 }
-

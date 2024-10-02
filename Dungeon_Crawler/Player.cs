@@ -8,7 +8,6 @@ internal class Player : LevelElement
     public Dice PlayerDefence { get; set; }
     public int PlayerHealth { get; set; }
 
-
     public Player(Position position)
     {
         Name = "Hero";
@@ -19,7 +18,6 @@ internal class Player : LevelElement
         PlayerAttack = new Dice(2, 6, 2);
         PlayerDefence = new Dice(2, 6, 0);
     }
-
 
     public Position GetNewPlayerPosition(ConsoleKeyInfo cki)
     {
@@ -46,6 +44,4 @@ internal class Player : LevelElement
         }
         return newPlayerPosition;
     }
-
 }
-

@@ -27,7 +27,6 @@ class LevelData
             throw new FileNotFoundException($"The file: {fileName} could not be found", fileName);
         }
 
-
         string[] mapLevel = File.ReadAllLines(level);
 
         for (int y = 0; y < mapLevel.Length; y++)
@@ -59,4 +58,3 @@ class LevelData
         return playerStartPosition;
     }
 }
-

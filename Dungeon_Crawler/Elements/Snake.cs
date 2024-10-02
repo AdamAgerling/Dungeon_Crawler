@@ -1,7 +1,6 @@
 ﻿
 class Snake : Enemy
 {
-
     public Snake(Position position)
     {
         Position = position;
@@ -24,4 +23,3 @@ class Snake : Enemy
         }
     }
 }
-
