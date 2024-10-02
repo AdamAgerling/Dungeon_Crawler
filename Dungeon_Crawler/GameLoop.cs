@@ -68,6 +68,10 @@ class Game
             {
                 return levelElements;
             }
+            if (moveTo != null && moveTo is Rat && moveTo is Snake)
+            {
+                return levelElements;
+            }
             else if (moveTo is Snake snake)
             {
                 HandleEncounter(player, snake, levelElements);
@@ -79,6 +83,7 @@ class Game
             if (playerHealth <= 0)
             {
                 Console.WriteLine($"{player.Name} died. Game over..");
+                Console.ReadKey();
                 Environment.Exit(0);
             }
         }
@@ -112,6 +117,7 @@ class Game
         var playerDefence = player.PlayerDefence.Throw();
         var enemyAttack = enemy.AttackDice.Throw();
         var enemyDefence = enemy.DefenceDice.Throw();
+
         var playerDamageTaken = Math.Max(0, enemyAttack - playerDefence);
         var enemyDamageTaken = Math.Max(0, playerAttack - enemyDefence);
 

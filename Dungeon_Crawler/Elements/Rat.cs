@@ -1,5 +1,4 @@
-﻿
-class Rat : Enemy
+﻿class Rat : Enemy
 {
 
     public Rat(Position position)
@@ -16,38 +15,44 @@ class Rat : Enemy
     public override void UpdateEnemies(List<LevelElement> levelElements, Player player)
     {
         var random = new Random();
+
         foreach (var element in levelElements)
         {
             if (element is Rat rat)
             {
-                Position newRatPosition = rat.Position;
                 var ratMoveDirection = random.Next(1, 5);
 
-                //THE RATS ARE MULTIPLYING
 
+                Position? oldRatPosition = rat.Position;
+                Console.SetCursorPosition(oldRatPosition.Value.X, oldRatPosition.Value.Y + 4);
+                Console.Write(' ');
+
+                Position updatedRatPosition = oldRatPosition.Value;
                 switch (ratMoveDirection)
                 {
                     case 1:
-                        newRatPosition.Y += 1;
+                        updatedRatPosition.Y += 1;
                         break;
                     case 2:
-                        newRatPosition.Y -= 1;
+                        updatedRatPosition.Y -= 1;
                         break;
                     case 3:
-                        newRatPosition.X += 1;
+                        updatedRatPosition.X += 1;
                         break;
                     case 4:
-                        newRatPosition.X -= 1;
+                        updatedRatPosition.X -= 1;
                         break;
                 }
                 var collisionElement = levelElements
-               .FirstOrDefault(e => e.Position.X == newRatPosition.X && e.Position.Y == newRatPosition.Y);
+               .FirstOrDefault(e => e.Position.X == updatedRatPosition.X && e.Position.Y == updatedRatPosition.Y);
 
-                if (collisionElement == null || collisionElement is Player || collisionElement is Rat)
+                if (collisionElement == null || collisionElement is Player)
                 {
-                    Console.SetCursorPosition(newRatPosition.X, newRatPosition.Y);
-                    Console.Write(' ');
-                    rat.Position = newRatPosition;
+                    if (updatedRatPosition.X == player.Position.X && updatedRatPosition.Y == player.Position.Y)
+                    {
+                        return;
+                    }
+                    rat.Position = updatedRatPosition;
                 }
             }
         }
