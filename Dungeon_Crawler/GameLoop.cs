@@ -1,6 +1,7 @@
 ﻿class GameLoop
 {
     private int turnCounter = 0;
+
     public void Play()
     {
         var levelData = new LevelData();
@@ -11,13 +12,17 @@
         var snake = new Snake(mapLoadStartPosition);
         var initialState = levelData.Elements;
         var updatedState = GetUpdatedMapState(initialState, player);
+
+
         while (true)
         {
             turnCounter++;
             PlayerStats(player);
             PrintMap(updatedState, player, lastPlayerPosition);
 
+            Console.ForegroundColor = ConsoleColor.Black;
             var keyPress = Console.ReadKey();
+            Console.ResetColor();
             if (keyPress.Key == ConsoleKey.Escape)
             {
                 break;
@@ -41,31 +46,33 @@
     }
     private List<LevelElement> TryMoveHere(List<LevelElement> levelElements, Player player, Position playerNewPosition, ConsoleKeyInfo keyPress)
     {
-        var moveTo = levelElements
+        var collisionElement = levelElements
             .FirstOrDefault(element => element.Position.X == playerNewPosition.X && element.Position.Y == playerNewPosition.Y);
 
-        if (moveTo != null)
+        if (collisionElement != null)
         {
-            if (moveTo is Wall)
+            if (collisionElement is Wall)
             {
                 return levelElements;
             }
-            else if (moveTo is Enemy enemy)
+            else if (collisionElement is Enemy enemy)
             {
-                HandlePlayerAttack(player, enemy, levelElements);
+                player.HandlePlayerAttack(player, enemy, levelElements);
+                Console.SetCursorPosition(enemy.Position.X, enemy.Position.Y + 4);
+                Console.Write(' ');
             }
         }
         else
         {
             player.Position = playerNewPosition;
         }
-
         return GetUpdatedMapState(levelElements, player);
     }
 
     private void PrintMap(List<LevelElement> levelElements, Player player, Position? lastPlayerPosition)
     {
         int mapOffset = 4;
+
         if (lastPlayerPosition != null)
         {
             Console.SetCursorPosition(lastPlayerPosition.Value.X, lastPlayerPosition.Value.Y + mapOffset);
@@ -75,37 +82,7 @@
         foreach (var element in levelElements)
         {
             Console.SetCursorPosition(element.Position.X, element.Position.Y + mapOffset);
-            element.Draw();
-        }
-    }
-
-    private void HandlePlayerAttack(Player player, Enemy enemy, List<LevelElement> levelElements)
-    {
-        var playerAttack = player.PlayerAttack.Throw();
-        var playerDefence = player.PlayerDefence.Throw();
-        var enemyAttack = enemy.AttackDice.Throw();
-        var enemyDefence = enemy.DefenceDice.Throw();
-
-        var playerDamageTaken = Math.Max(0, enemyAttack - playerDefence);
-        var enemyDamageTaken = Math.Max(0, playerAttack - enemyDefence);
-
-        Console.WriteLine();
-        enemy.Health -= enemyDamageTaken;
-        Console.WriteLine($"\n{player.Name} attacks {enemy.Name} for {enemyDamageTaken} damage!");
-
-        player.PlayerHealth -= playerDamageTaken;
-        Console.WriteLine($"{enemy.Name} attacks {player.Name} for {playerDamageTaken} damage!");
-
-        if (enemy.Health <= 0)
-        {
-            levelElements.Remove(enemy);
-            Console.WriteLine($"{enemy.Name} died.");
-        }
-        if (player.PlayerHealth <= 0)
-        {
-            Console.WriteLine($"{player.Name} died. Game over..");
-            Console.ReadKey();
-            Environment.Exit(0);
+            element.Draw(player);
         }
     }
 

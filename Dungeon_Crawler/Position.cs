@@ -9,4 +9,14 @@ public struct Position
         X = x;
         Y = y;
     }
+    public int ViewDistanceX(Position position) => Math.Abs(position.X - X);
+    public int ViewDistanceY(Position position) => Math.Abs(position.Y - Y);
+
+    public double ViewDistance(Position position)
+    {
+        var viewDistanceX = ViewDistanceX(position);
+        var viewDistanceY = ViewDistanceY(position);
+        var viewDistance = Math.Sqrt(Math.Pow(viewDistanceX, 4) + Math.Pow(viewDistanceY, 4));
+        return viewDistance;
+    }
 }

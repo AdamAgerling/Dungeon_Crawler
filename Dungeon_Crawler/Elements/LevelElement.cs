@@ -1,14 +1,16 @@
-﻿
-abstract class LevelElement
+﻿abstract class LevelElement
 {
     public ConsoleColor ColorPicker { get; set; }
     public Position Position { get; set; }
     public char MapElement { get; set; }
 
-    public void Draw()
+    public virtual void Draw(Player player)
     {
-        Console.ForegroundColor = ColorPicker;
-        Console.Write(MapElement);
-        Console.ResetColor();
+        if (player.Position.ViewDistance(Position) < 2)
+        {
+            Console.ForegroundColor = ColorPicker;
+            Console.Write(MapElement);
+            Console.ResetColor();
+        }
     }
 }

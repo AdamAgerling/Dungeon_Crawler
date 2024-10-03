@@ -44,4 +44,33 @@ internal class Player : LevelElement
         }
         return newPlayerPosition;
     }
+    public void HandlePlayerAttack(Player player, Enemy enemy, List<LevelElement> levelElements)
+    {
+        var playerAttack = player.PlayerAttack.Throw();
+        var playerDefence = player.PlayerDefence.Throw();
+        var enemyAttack = enemy.AttackDice.Throw();
+        var enemyDefence = enemy.DefenceDice.Throw();
+
+        var playerDamageTaken = Math.Max(0, enemyAttack - playerDefence);
+        var enemyDamageTaken = Math.Max(0, playerAttack - enemyDefence);
+        GameLoop.ClearCurrentConsoleLine(1);
+        GameLoop.ClearCurrentConsoleLine(2);
+
+        enemy.Health -= enemyDamageTaken;
+        Console.WriteLine($"\n{player.Name} attacks {enemy.Name} for {enemyDamageTaken} damage!");
+
+        player.PlayerHealth -= playerDamageTaken;
+        Console.WriteLine($"{enemy.Name} attacks {player.Name} for {playerDamageTaken} damage!");
+        if (enemy.Health <= 0)
+        {
+            levelElements.Remove(enemy);
+            Console.WriteLine($"{enemy.Name} died.");
+        }
+        if (player.PlayerHealth <= 0)
+        {
+            Console.WriteLine($"{player.Name} died. Game over..");
+            Console.ReadKey();
+            Environment.Exit(0);
+        }
+    }
 }

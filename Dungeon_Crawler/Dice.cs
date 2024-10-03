@@ -24,6 +24,6 @@ class Dice
 
     public override string ToString()
     {
-        return $"{_numberOfDice}d{_sidesPerDice} + {_modifier}) => {_sidesPerDice + _modifier}";
+        return $"{_numberOfDice}d{_sidesPerDice} + {_modifier}";
     }
 }

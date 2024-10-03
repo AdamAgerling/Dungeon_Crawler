@@ -65,16 +65,14 @@
 
         var playerDamageTaken = Math.Max(0, enemyAttack - playerDefence);
         var enemyDamageTaken = Math.Max(0, playerAttack - enemyDefence);
-        Console.SetCursorPosition(0, 21);
-        Console.WriteLine();
+        GameLoop.ClearCurrentConsoleLine(1);
+        GameLoop.ClearCurrentConsoleLine(2);
+
         player.PlayerHealth -= playerDamageTaken;
         Console.WriteLine($"\n{rat.Name} attacked {player.Name} for {playerDamageTaken} damage!");
         rat.Health -= enemyDamageTaken;
 
         Console.WriteLine($"{player.Name} attacks {rat.Name} for {enemyDamageTaken} damage!");
-
-        GameLoop.ClearCurrentConsoleLine(22);
-        GameLoop.ClearCurrentConsoleLine(23);
 
         if (player.PlayerHealth <= 0)
         {
