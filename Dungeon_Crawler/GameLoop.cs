@@ -1,5 +1,6 @@
-﻿class Game
+﻿class GameLoop
 {
+    private int turnCounter = 0;
     public void Play()
     {
         var levelData = new LevelData();
@@ -10,9 +11,9 @@
         var snake = new Snake(mapLoadStartPosition);
         var initialState = levelData.Elements;
         var updatedState = GetUpdatedMapState(initialState, player);
-
         while (true)
         {
+            turnCounter++;
             PlayerStats(player);
             PrintMap(updatedState, player, lastPlayerPosition);
 
@@ -25,6 +26,7 @@
             var playerNewPosition = player.GetNewPlayerPosition(keyPress);
             updatedState = TryMoveHere(updatedState, player, playerNewPosition, keyPress);
             rat.UpdateEnemies(updatedState, player);
+            snake.UpdateEnemies(updatedState, player);
         }
     }
 
@@ -110,8 +112,7 @@
     public void PlayerStats(Player player)
     {
         ClearCurrentConsoleLine(0);
-        Console.WriteLine($"{player.Name}:{player.PlayerHealth}health");
-
+        Console.WriteLine($"Name:{player.Name} - Health:{player.PlayerHealth}/100 - Turn: {turnCounter}");
     }
     public static void ClearCurrentConsoleLine(int row)
     {

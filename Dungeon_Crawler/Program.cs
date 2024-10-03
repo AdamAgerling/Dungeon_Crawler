@@ -1,4 +1,4 @@
 ﻿
-var game = new Game();
+var game = new GameLoop();
 
 game.Play();

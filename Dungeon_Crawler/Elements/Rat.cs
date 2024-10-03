@@ -73,12 +73,13 @@
 
         Console.WriteLine($"{player.Name} attacks {rat.Name} for {enemyDamageTaken} damage!");
 
-        Game.ClearCurrentConsoleLine(22);
-        Game.ClearCurrentConsoleLine(23);
+        GameLoop.ClearCurrentConsoleLine(22);
+        GameLoop.ClearCurrentConsoleLine(23);
 
         if (player.PlayerHealth <= 0)
         {
             Console.WriteLine($"{player.Name} died. Game over..");
+            Console.ReadKey();
             Environment.Exit(0);
         }
         if (rat.Health <= 0)

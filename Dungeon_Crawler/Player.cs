@@ -11,7 +11,7 @@ internal class Player : LevelElement
     public Player(Position position)
     {
         Name = "Hero";
-        ColorPicker = ConsoleColor.White;
+        ColorPicker = ConsoleColor.Yellow;
         MapElement = '@';
         PlayerHealth = 100;
         Position = position;
