@@ -1,6 +1,6 @@
 ﻿class GameLoop
 {
-    private int turnCounter = 0;
+    public int turnCounter = 0;
 
     public void Play()
     {
@@ -15,7 +15,6 @@
 
         while (true)
         {
-
             PlayerStats(player);
             PrintMap(updatedState, player, lastPlayerPosition);
 
@@ -63,7 +62,7 @@
             }
             else if (collisionElement is Enemy enemy)
             {
-                player.HandlePlayerAttack(player, enemy, levelElements);
+                player.HandlePlayerAttack(player, enemy, levelElements, turnCounter);
                 Console.SetCursorPosition(enemy.Position.X, enemy.Position.Y + 4);
                 Console.Write(' ');
             }
@@ -95,7 +94,7 @@
     public void PlayerStats(Player player)
     {
         ClearHorizontalConsoleRow(0);
-        Console.WriteLine($"Name:{player.Name} - Health:{player.PlayerHealth}/100 - Turn: {turnCounter}");
+        Console.WriteLine($"Name: {player.Name} - Health:{Math.Max(0, player.PlayerHealth)}/100 - Turn: {turnCounter}");
     }
     public static void ClearHorizontalConsoleRow(int row)
     {

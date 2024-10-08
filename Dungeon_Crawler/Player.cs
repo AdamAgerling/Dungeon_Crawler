@@ -8,7 +8,7 @@ internal class Player : LevelElement
 
     public Player(Position position)
     {
-        Name = "Hero";
+        Name = "Man Boy";
         ColorPicker = ConsoleColor.Yellow;
         MapElement = '@';
         PlayerHealth = 100;
@@ -44,7 +44,7 @@ internal class Player : LevelElement
         return newPlayerPosition;
     }
     // Player Attack method
-    public void HandlePlayerAttack(Player player, Enemy enemy, List<LevelElement> levelElements)
+    public void HandlePlayerAttack(Player player, Enemy enemy, List<LevelElement> levelElements, int turnCounter)
     {
         var playerAttack = player.PlayerAttack.Throw();
         var playerDefence = player.PlayerDefence.Throw();
@@ -138,9 +138,13 @@ internal class Player : LevelElement
                     Console.ResetColor();
                     break;
                 }
+
         }
         if (player.PlayerHealth <= 0)
         {
+            GameLoop.ClearHorizontalConsoleRow(0);
+            Console.WriteLine($"Name: {player.Name} - Health: 0/100 - Turn: {turnCounter}");
+            GameLoop.ClearHorizontalConsoleRow(3);
             Console.WriteLine($"{player.Name} died. Game over..");
             Console.ReadKey();
             Environment.Exit(0);
