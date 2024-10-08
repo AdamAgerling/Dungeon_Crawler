@@ -17,7 +17,7 @@ public struct Position
     {
         var viewDistanceX = ViewDistanceX(position);
         var viewDistanceY = ViewDistanceY(position);
-        var viewDistance = Math.Sqrt(Math.Pow(viewDistanceX, 3) + Math.Pow(viewDistanceY, 3));
+        var viewDistance = Math.Sqrt(Math.Pow(viewDistanceX, 2) + Math.Pow(viewDistanceY, 2));
         return viewDistance;
     }
 }

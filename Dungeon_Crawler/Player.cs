@@ -60,6 +60,8 @@ internal class Player : LevelElement
 
         if (enemy.Health <= 0)
         {
+            Console.SetCursorPosition(enemy.Position.X, enemy.Position.Y + 4);
+            Console.Write(' ');
             Console.SetCursorPosition(0, 3);
             levelElements.Remove(enemy);
             Console.WriteLine($"{enemy.Name} died.");

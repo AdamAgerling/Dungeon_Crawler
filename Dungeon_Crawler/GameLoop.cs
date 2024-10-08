@@ -63,8 +63,6 @@
             else if (collisionElement is Enemy enemy)
             {
                 player.HandlePlayerAttack(player, enemy, levelElements, turnCounter);
-                Console.SetCursorPosition(enemy.Position.X, enemy.Position.Y + 4);
-                Console.Write(' ');
             }
         }
         else

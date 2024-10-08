@@ -75,6 +75,7 @@
 
         if (player.PlayerHealth <= 0)
         {
+            GameLoop.ClearHorizontalConsoleRow(3);
             Console.WriteLine($"{player.Name} died. Game over..");
             Console.ReadKey();
             Environment.Exit(0);
