@@ -13,16 +13,22 @@
         var initialState = levelData.Elements;
         var updatedState = GetUpdatedMapState(initialState, player);
 
-
         while (true)
         {
-            turnCounter++;
+
             PlayerStats(player);
             PrintMap(updatedState, player, lastPlayerPosition);
 
             Console.ForegroundColor = ConsoleColor.Black;
             var keyPress = Console.ReadKey();
             Console.ResetColor();
+            if (keyPress != null)
+            {
+                ClearHorizontalConsoleRow(1);
+                ClearHorizontalConsoleRow(2);
+                ClearHorizontalConsoleRow(3);
+                turnCounter++;
+            }
             if (keyPress.Key == ConsoleKey.Escape)
             {
                 break;
@@ -88,13 +94,14 @@
 
     public void PlayerStats(Player player)
     {
-        ClearCurrentConsoleLine(0);
+        ClearHorizontalConsoleRow(0);
         Console.WriteLine($"Name:{player.Name} - Health:{player.PlayerHealth}/100 - Turn: {turnCounter}");
     }
-    public static void ClearCurrentConsoleLine(int row)
+    public static void ClearHorizontalConsoleRow(int row)
     {
-        Console.SetCursorPosition(row, 0);
+        Console.SetCursorPosition(0, row);
         Console.Write(new string(' ', Console.WindowWidth));
-        Console.SetCursorPosition(row, 0);
+        Console.SetCursorPosition(0, row);
     }
+
 }

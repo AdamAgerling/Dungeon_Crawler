@@ -12,6 +12,7 @@ class Snake : Enemy
         DefenceDice = new Dice(1, 8, 5);
     }
 
+    // The snake walks away from the player when the player is within 2 tiles of the snake. 
     public override void UpdateEnemies(List<LevelElement> levelElements, Player player)
     {
         var random = new Random();

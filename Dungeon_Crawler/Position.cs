@@ -9,6 +9,7 @@ public struct Position
         X = x;
         Y = y;
     }
+    // This controls the view distance, but the implementation is used in LevelElements.
     public int ViewDistanceX(Position position) => Math.Abs(position.X - X);
     public int ViewDistanceY(Position position) => Math.Abs(position.Y - Y);
 
@@ -16,7 +17,7 @@ public struct Position
     {
         var viewDistanceX = ViewDistanceX(position);
         var viewDistanceY = ViewDistanceY(position);
-        var viewDistance = Math.Sqrt(Math.Pow(viewDistanceX, 4) + Math.Pow(viewDistanceY, 4));
+        var viewDistance = Math.Sqrt(Math.Pow(viewDistanceX, 3) + Math.Pow(viewDistanceY, 3));
         return viewDistance;
     }
 }

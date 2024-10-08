@@ -6,7 +6,7 @@
 
     public virtual void Draw(Player player)
     {
-        if (player.Position.ViewDistance(Position) < 2)
+        if (player.Position.ViewDistance(Position) < 4)
         {
             Console.ForegroundColor = ColorPicker;
             Console.Write(MapElement);
