@@ -17,7 +17,7 @@
         {
             PlayerStats(player);
             PrintMap(updatedState, player, lastPlayerPosition);
-
+            Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.Black;
             var keyPress = Console.ReadKey();
             Console.ResetColor();
@@ -100,5 +100,4 @@
         Console.Write(new string(' ', Console.WindowWidth));
         Console.SetCursorPosition(0, row);
     }
-
 }

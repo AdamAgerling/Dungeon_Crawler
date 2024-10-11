@@ -10,7 +10,7 @@
         AttackDice = new Dice(1, 6, 3);
         DefenceDice = new Dice(1, 6, 1);
     }
-    // Rat movement pattern with each of my button presses, they're supposed to walk around randomly.
+    // Rat movement pattern with each of my button presses, they're supposed to walk around randomly, and not through walls.
     public override void UpdateEnemies(List<LevelElement> levelElements, Player player)
     {
         var random = new Random();
